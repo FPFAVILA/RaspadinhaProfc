@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '../types';
-import { trackRegistration } from '../utils/tracking';
 import {
   Gift,
   Crown,
@@ -138,11 +137,6 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegister }
     };
 
     setShowSuccess(true);
-
-    trackRegistration({
-      name: user.name,
-      email: user.email
-    });
 
     setTimeout(() => {
       onRegister(user);

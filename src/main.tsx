@@ -5,10 +5,8 @@ import App from './App.tsx';
 import './index.css';
 import { trackPageView } from './utils/tracking';
 
-// Utmify Pageview tracking wrapper
 const AppWithTracking = () => {
   useEffect(() => {
-    // Track pageview on initial load with a delay to ensure scripts are loaded
     const timer = setTimeout(() => {
       trackPageView();
     }, 1000);
