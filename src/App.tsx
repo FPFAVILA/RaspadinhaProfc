@@ -21,7 +21,6 @@ function App() {
 
       if (savedUser && validRegistration === 'true') {
         const userData = JSON.parse(savedUser);
-        console.log('👤 Usuário encontrado no localStorage:', userData.name);
         setUser(userData);
 
         // Se já está registrado e tenta acessar /cadastro, redireciona para /dashboard
@@ -40,8 +39,6 @@ function App() {
   }, [navigate, location.pathname]);
 
   const handleRegister = (newUser: User) => {
-    console.log('📝 Registrando novo usuário:', newUser.name);
-
     // Marcar que o usuário completou o fluxo correto de cadastro
     localStorage.setItem(VALID_REGISTRATION_KEY, 'true');
 
@@ -55,7 +52,6 @@ function App() {
 
     try {
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
-      console.log('💾 Usuário salvo no localStorage');
     } catch (error) {
       console.error('Erro ao salvar usuário:', error);
     }

@@ -24,8 +24,8 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({
           light: '#FFFFFF'
         },
         errorCorrectionLevel: 'H'
-      }).catch(err => {
-        console.error('Erro ao gerar QR Code:', err);
+      }).catch(() => {
+        // Error handled silently
       });
     }
   }, [value, size]);

@@ -90,11 +90,6 @@ export const GameDashboard: React.FC<GameDashboardProps> = ({ user }) => {
   const canPlay = gameState.balance >= CARD_COST;
   const missingAmount = canPlay ? 0 : CARD_COST - gameState.balance;
 
-  console.log('=== DASHBOARD ===');
-  console.log('Saldo:', gameState.balance);
-  console.log('Pode jogar?', canPlay);
-  console.log('Falta:', missingAmount);
-
   const getSuggestedAmount = () => {
     if (!canPlay) {
       return Math.max(missingAmount, 1);
@@ -103,24 +98,14 @@ export const GameDashboard: React.FC<GameDashboardProps> = ({ user }) => {
   };
 
   const handlePlayGame = () => {
-    console.log('=== CLICOU JOGAR ===');
-    console.log('Saldo:', gameState.balance);
-    console.log('Custo:', CARD_COST);
-    console.log('Pode jogar?', canPlay);
-
     if (!canPlay) {
-      console.log('❌ NÃO PODE JOGAR - SALDO INSUFICIENTE');
       setShowAddBalanceModal(true);
       return;
     }
 
-    console.log('✅ PODE JOGAR!');
     const card = startNewCard();
     if (card) {
-      console.log('✅ Carta criada');
       setCurrentCard(card);
-    } else {
-      console.log('❌ ERRO ao criar carta');
     }
   };
 
@@ -144,8 +129,6 @@ export const GameDashboard: React.FC<GameDashboardProps> = ({ user }) => {
   };
 
   const handleWithdraw = (amount: number) => {
-    // Aqui você implementaria a lógica de saque
-    console.log('Saque solicitado:', amount);
     setShowWithdrawModal(false);
   };
   const handleCloseMoneyPrizeModal = () => {

@@ -1,32 +1,38 @@
-// Utmify tracking utilities
 declare global {
   interface Window {
-    pixelId?: string;
-    AdvancedPixelEvent?: (eventName: string, eventData?: any) => void;
+    fbq?: (action: string, event: string, data?: any) => void;
   }
 }
 
-export const trackEvent = (eventName: string, eventData?: any) => {
+export const trackPageView = () => {
   try {
-    if (typeof window !== 'undefined' && window.AdvancedPixelEvent) {
-      window.AdvancedPixelEvent(eventName, eventData);
-      console.log(`[Utmify] Event tracked: ${eventName}`, eventData);
-    } else {
-      console.warn(`[Utmify] AdvancedPixelEvent not available for: ${eventName}`);
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'PageView');
     }
   } catch (error) {
-    console.error(`[Utmify] Error tracking ${eventName}:`, error);
+    // Error handled silently
   }
 };
 
-export const trackPageView = () => {
-  trackEvent('PageView');
+export const trackLead = (userData?: any) => {
+  try {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Lead', userData);
+    }
+  } catch (error) {
+    // Error handled silently
+  }
 };
 
-export const trackRegistration = (userData?: any) => {
-  trackEvent('Cadastro', userData);
-};
-
-export const trackPrizeRedemption = (prizeData?: any) => {
-  trackEvent('ResgateIphone', prizeData);
+export const trackPurchase = (amount: number) => {
+  try {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Purchase', {
+        value: amount,
+        currency: 'BRL'
+      });
+    }
+  } catch (error) {
+    // Error handled silently
+  }
 };
