@@ -40,7 +40,7 @@ const generateWinningCard = (prizeAmount: number, prizeType: 'money' | 'applewat
     grid,
     isCompleted: false,
     hasWon: true,
-    prizeAmount: prizeType === 'applewatch' ? 2499 : prizeAmount,
+    prizeAmount: prizeType === 'applewatch' ? 1299 : prizeAmount,
     prizeType,
   };
 };

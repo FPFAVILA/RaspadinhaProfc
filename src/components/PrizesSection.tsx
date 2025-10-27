@@ -61,7 +61,7 @@ export const PrizesSection: React.FC = React.memo(() => {
     {
       id: 'applewatch',
       name: 'Apple Watch',
-      value: 'R$ 2.899',
+      value: 'R$ 1.299',
       image: '/Apple-Watch-PNG-High-Quality-Image.png',
       gradient: 'bg-blue-700',
       type: 'apple',
