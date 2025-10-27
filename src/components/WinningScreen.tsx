@@ -11,7 +11,7 @@ interface WinningScreenProps {
 
 export const WinningScreen: React.FC<WinningScreenProps> = ({ user, onClose, onAddToBalance }) => {
   const [confetti, setConfetti] = useState(true);
-  const prizeValue = 2499.00;
+  const prizeValue = 1299.00;
 
   useEffect(() => {
     if ('vibrate' in navigator) {
@@ -153,7 +153,7 @@ export const WinningScreen: React.FC<WinningScreenProps> = ({ user, onClose, onA
               <p className="text-gray-300 text-[11px] mb-1.5">45mm - GPS - Meia-Noite</p>
 
               <div className="bg-accent text-white px-2.5 py-1 rounded-full text-sm font-bold inline-block shadow-lg">
-                R$ 2.499,00
+                R$ 1.299,00
               </div>
             </div>
           </div>
