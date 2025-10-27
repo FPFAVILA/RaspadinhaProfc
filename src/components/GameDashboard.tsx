@@ -94,7 +94,7 @@ export const GameDashboard: React.FC<GameDashboardProps> = ({ user }) => {
     if (!canPlay) {
       return Math.max(missingAmount, 1);
     }
-    return 20;
+    return 14.70;
   };
 
   const handlePlayGame = () => {
