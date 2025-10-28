@@ -152,27 +152,42 @@ export const WithdrawModal: React.FC<WithdrawModalProps> = ({
     return (
       <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden">
-          <div className="bg-emerald-500 p-6 text-center">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 animate-bounce">
-              <CheckCircle className="w-8 h-8 text-white" />
+          <div className="bg-orange-500 p-6 text-center">
+            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Clock className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">🎉 Sucesso! 🎉</h2>
-            <p className="text-white/90">Saque processado!</p>
+            <h2 className="text-2xl font-bold text-white mb-2">⏳ Saque em Processamento</h2>
+            <p className="text-white/90">Aguardando processamento</p>
           </div>
-          
+
           <div className="p-6 text-center">
-            <div className="bg-emerald-50 rounded-2xl p-4 mb-4 border border-emerald-200">
-              <div className="text-4xl mb-3">✅</div>
-              <h3 className="text-xl font-bold text-emerald-800 mb-2">
-                Saque Confirmado
+            <div className="bg-orange-50 rounded-2xl p-4 mb-4 border border-orange-200">
+              <div className="text-4xl mb-3">📋</div>
+              <h3 className="text-xl font-bold text-orange-800 mb-2">
+                Solicitação Recebida
               </h3>
-              <div className="bg-white rounded-xl p-3 border border-emerald-300">
-                <div className="text-2xl font-bold text-emerald-600 mb-1">
+              <div className="bg-white rounded-xl p-3 border border-orange-300">
+                <div className="text-2xl font-bold text-orange-600 mb-1">
                   R$ {formData.amount}
                 </div>
-                <p className="text-emerald-600 text-sm">
-                  Será transferido em até 2 dias úteis
+                <p className="text-orange-700 text-sm font-semibold mb-2">
+                  ⏱️ Processamento em até 2 dias úteis
                 </p>
+                <p className="text-gray-600 text-xs">
+                  Você receberá o valor na sua chave PIX
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+              <div className="flex items-start gap-2">
+                <Clock className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                <div className="text-left">
+                  <h4 className="font-bold text-blue-800 mb-1 text-sm">Status do Saque</h4>
+                  <p className="text-blue-700 text-xs">
+                    Seu saque está em processamento. O valor será enviado para sua chave PIX em até 2 dias úteis. Você pode acompanhar o status na área de transações.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

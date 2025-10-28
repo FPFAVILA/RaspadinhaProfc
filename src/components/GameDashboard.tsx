@@ -129,7 +129,17 @@ export const GameDashboard: React.FC<GameDashboardProps> = ({ user }) => {
   };
 
   const handleWithdraw = (amount: number) => {
+    const currentBalance = gameState.balance;
+    const newBalance = parseFloat((currentBalance - amount).toFixed(2));
+
+    const updatedGameState = {
+      ...gameState,
+      balance: newBalance
+    };
+
+    localStorage.setItem('raspadinha_game_state', JSON.stringify(updatedGameState));
     setShowWithdrawModal(false);
+    window.location.reload();
   };
   const handleCloseMoneyPrizeModal = () => {
     setShowMoneyPrizeModal(false);
