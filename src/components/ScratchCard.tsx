@@ -26,6 +26,7 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
   const [showLoseMessage, setShowLoseMessage] = useState(false);
   const [loseMessage, setLoseMessage] = useState('');
   const [showResultDelay, setShowResultDelay] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
 
   const loseMessages = [
     "Você quase conseguiu! Tente novamente!",
@@ -39,8 +40,10 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
 
   // Sair do modo fullscreen
   const exitFullscreen = useCallback(() => {
+    if (isCompleting) return;
+    setIsCompleting(true);
     onComplete(card);
-  }, [card, onComplete]);
+  }, [card, onComplete, isCompleting]);
 
   // Inicializar canvas
   const initializeCanvas = useCallback(() => {
@@ -49,6 +52,9 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Marcar como inicializado imediatamente para evitar duplicação
+    setCanvasInitialized(true);
 
     // Configurar canvas com alta resolução
     const dpr = window.devicePixelRatio || 1;
@@ -96,8 +102,6 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
     ctx.strokeStyle = '#b45309';
     ctx.lineWidth = 2;
     ctx.strokeRect(4, 4, rect.width - 8, rect.height - 8);
-
-    setCanvasInitialized(true);
   }, [canvasInitialized]);
 
   // Inicializar canvas na primeira renderização
@@ -126,7 +130,7 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
   // Função de raspar otimizada
   const scratch = useCallback((clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
-    if (!canvas || !canvasInitialized) return;
+    if (!canvas || !canvasInitialized || isCompleting) return;
 
     const rect = canvas.getBoundingClientRect();
     const x = clientX - rect.left;
@@ -188,7 +192,7 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
     }
 
     // Auto-completar se mais de 60% foi raspado
-    if (percentage > 60) {
+    if (percentage > 60 && !showResultDelay) {
       setTimeout(() => {
         setShowAllRevealed(true);
         setTimeout(() => {
@@ -197,19 +201,20 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
         }, 500);
       }, 800);
     }
-  }, [card.hasWon, checkWinningPattern, canvasInitialized]);
+  }, [card.hasWon, checkWinningPattern, canvasInitialized, showResultDelay]);
 
   // Completar card quando todos os blocos estão revelados E após delay
   useEffect(() => {
-    if (revealedBlocks.size === 9 && showResultDelay) {
+    if (revealedBlocks.size === 9 && showResultDelay && !isCompleting) {
+      setIsCompleting(true);
       const updatedCard = { ...card, isCompleted: true };
-      
+
       if (!card.hasWon) {
         // Mostrar mensagem de incentivo se não ganhou
         const randomMessage = loseMessages[Math.floor(Math.random() * loseMessages.length)];
         setLoseMessage(randomMessage);
         setShowLoseMessage(true);
-        
+
         setTimeout(() => {
           setShowLoseMessage(false);
           setTimeout(() => {
@@ -223,10 +228,11 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
         }, 2000);
       }
     }
-  }, [revealedBlocks.size, showResultDelay, card, onComplete]);
+  }, [revealedBlocks.size, showResultDelay, card, onComplete, isCompleting]);
 
   // Event handlers para touch
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (isCompleting) return;
     e.preventDefault();
     e.stopPropagation();
     setIsScratching(true);
@@ -235,6 +241,7 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (isCompleting) return;
     e.preventDefault();
     e.stopPropagation();
     if (isScratching && e.touches.length === 1) {
@@ -251,13 +258,14 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
 
   // Event handlers para mouse
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (isCompleting) return;
     e.preventDefault();
     setIsScratching(true);
     scratch(e.clientX, e.clientY);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (isScratching) {
+    if (isScratching && !isCompleting) {
       scratch(e.clientX, e.clientY);
     }
   };
@@ -344,7 +352,7 @@ export const ScratchCard: React.FC<ScratchCardProps> = ({ card, onComplete }) =>
           {/* Canvas de raspadinha */}
           <canvas
             ref={canvasRef}
-            className="absolute inset-0 w-full h-full rounded-3xl cursor-pointer select-none"
+            className={`absolute inset-0 w-full h-full rounded-3xl select-none ${isCompleting ? 'cursor-default pointer-events-none' : 'cursor-pointer'}`}
             style={{ touchAction: 'none' }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
