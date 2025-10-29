@@ -128,20 +128,24 @@ export const useGameState = () => {
   }, []);
 
   const startNewCard = useCallback((): ScratchCard | null => {
-    if (gameState.balance < CARD_COST) {
+    // Recarregar estado do localStorage para garantir dados atualizados
+    const saved = localStorage.getItem(GAME_STATE_KEY);
+    const currentState = saved ? JSON.parse(saved) : gameState;
+
+    if (currentState.balance < CARD_COST) {
       return null;
     }
 
-    const newRound = gameState.scratchCardsUsed + 1;
+    const newRound = currentState.scratchCardsUsed + 1;
     const winLogic = getWinLogic(newRound);
 
     const card = winLogic.shouldWin
       ? generateWinningCard(winLogic.prizeAmount, winLogic.prizeType as 'money' | 'applewatch')
       : generateLosingCard();
 
-    const newBalance = parseFloat((gameState.balance - CARD_COST).toFixed(2));
+    const newBalance = parseFloat((currentState.balance - CARD_COST).toFixed(2));
     const newState: GameState = {
-      ...gameState,
+      ...currentState,
       balance: newBalance,
       scratchCardsUsed: newRound
     };
