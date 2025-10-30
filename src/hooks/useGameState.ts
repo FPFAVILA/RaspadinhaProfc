@@ -107,8 +107,7 @@ export const useGameState = () => {
     kycStatus: {
       isVerified: false,
       identityVerified: false,
-      depositVerified: false,
-      withdrawalVerified: false
+      depositVerified: false
     }
   });
 

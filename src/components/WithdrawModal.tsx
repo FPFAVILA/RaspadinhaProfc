@@ -9,7 +9,6 @@ interface WithdrawModalProps {
   balance: number;
   kycStatus?: KYCStatus;
   onOpenKYC?: () => void;
-  onOpenWithdrawalKYC?: () => void;
 }
 
 interface WithdrawFormData {
@@ -25,8 +24,7 @@ export const WithdrawModal: React.FC<WithdrawModalProps> = ({
   onWithdraw,
   balance,
   kycStatus,
-  onOpenKYC,
-  onOpenWithdrawalKYC
+  onOpenKYC
 }) => {
   const [formData, setFormData] = useState<WithdrawFormData>({
     amount: '',
@@ -84,21 +82,15 @@ export const WithdrawModal: React.FC<WithdrawModalProps> = ({
     e.preventDefault();
     if (!validateForm()) return;
 
-    const needsWithdrawalVerification = !kycStatus?.withdrawalVerified;
-
-    if (needsWithdrawalVerification && onOpenWithdrawalKYC) {
-      onClose();
-      onOpenWithdrawalKYC();
-      return;
-    }
-
     setIsSubmitting(true);
-
+    
+    // Simular processamento
     await new Promise(resolve => setTimeout(resolve, 2000));
-
+    
     setShowSuccess(true);
     setIsSubmitting(false);
-
+    
+    // Fechar modal após 3 segundos
     setTimeout(() => {
       setShowSuccess(false);
       onWithdraw(parseFloat(formData.amount.replace(',', '.')));

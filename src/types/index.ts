@@ -16,7 +16,6 @@ export interface KYCStatus {
   isVerified: boolean;
   identityVerified: boolean;
   depositVerified: boolean;
-  withdrawalVerified: boolean;
   cpf?: string;
   fullName?: string;
   birthDate?: string;
